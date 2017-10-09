@@ -1,7 +1,6 @@
 import pandas
 import editdistance
 import os
-# import sys
 import pyminizip
 import random
 
@@ -10,9 +9,6 @@ class MoodleRep:
         cdir = os.getcwd()
         class_desc = cdir+"/"+"class1.csv"
         self.records = pandas.read_csv(class_desc)
-        # self.test_desc = cdir+"/"+"A"+assign[1]+"/"+mode+"/"
-        # self.grades = pandas.read_csv(self.test_desc+"00_report.csv",header = None)
-        # self.assignment_name = "Assignment: Assignment "+assign[1]+" (Real)"
 
     def getPersonsGrade(self,name):
         return float(self.grades.loc[self.grades[0] == name][1])
@@ -25,7 +21,6 @@ class MoodleRep:
         if not (os.path.isdir(arc_path)):
             os.mkdir(arc_path)
         password = repr(int(random.uniform(1000000, 9999999)))
-        # passw.write(fl[:-4]+","+password+"\n")
         pyminizip.compress(feedback_path+name+".txt", arc_path+name+".zip", password, 1)
         return password
 
@@ -53,21 +48,3 @@ class MoodleRep:
 
     def store(self,path):
         self.records.to_csv(path+"/"+"00_frep.csv",index = False)
-
-
-
-
-
-
-
-
-
-
-
-# cas = sys.argv[1]
-# mode = sys.argv[2]
-#
-#
-#
-# rep = MoodleRep(cas,mode)
-# rep.assign()

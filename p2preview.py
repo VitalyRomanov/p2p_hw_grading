@@ -288,7 +288,7 @@ class p2pRev:
     def prepare_paths_prob(self,s,user_dir):
         paths = []
         for i in range(len(s.assigned)):
-            p_dir = user_dir + "/" + repr(s.assigned[i])
+            p_dir = user_dir + "/#" + repr(s.assigned[i])
             src_path = self.s_ind[s.checks_s[i]]['info'].path + "/" + s.checks_p[i]
             paths.append((src_path,p_dir))
         return paths
@@ -296,7 +296,7 @@ class p2pRev:
     def prepare_paths_stud(self,s,user_dir):
         paths = []
         for a_s in s.checks_s:
-            p_dir = user_dir + "/" + repr(self.s_ind[a_s]['id'])
+            p_dir = user_dir + "/#" + repr(self.s_ind[a_s]['id'])
             src_path = self.s_ind[a_s]['info'].path
             paths.append((src_path,p_dir))
         return paths
@@ -347,12 +347,6 @@ def main():
     # rev.store_records()
 
     rev.run_checks()
-
-    # for s in rev.students:
-    #     print(s.name," ",s.checks_s)
-    #
-    # for s,val in rev.s_ind.items():
-    #     print(s,val)
 
 
     rev.store_records()

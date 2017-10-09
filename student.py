@@ -2,6 +2,10 @@ import os
 
 class Student:
     def __init__(self,name,path):
+        '''
+        name : Name of the student should correspond to records in moodle
+        path : path to the folder with name "name"
+        '''
         self.name = name
         self.path = path+"/"+name
         self.solved_problems = dict()
@@ -14,7 +18,6 @@ class Student:
 
     def can_assign(self,s,p,max_p):
         # if a given student was already assigned, pick another one
-        # if not (s in self.checks_s):
         if self.can_assign_stud(s):
             # if number of needed problems exceeded, pick another one
             if self.checks_p.count(p)<max_p:

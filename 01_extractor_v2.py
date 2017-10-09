@@ -11,16 +11,30 @@ edit_dist_thr = 7
 
 
 def unpack_zip(path,filename,name):
+    print(path+"/"+filename)
     zip_ref = zipfile.ZipFile(path+"/"+filename, 'r')
-    # os.mkdir(path+"/"+name)
     zip_ref.extractall(path+"/"+name)
     zip_ref.close()
 
 def unpack_rar(path,filename,name):
     rar_ref = rarfile.RarFile(path+"/"+filename, 'r')
-    # os.mkdir(path+"/"+name)
     rar_ref.extractall(path+"/"+name)
     rar_ref.close()
+
+def unpack_7z(path,filename,name):
+    raise NotImplemented
+
+def unpack(path,filename,name):
+    if filename[-3:].lower()=="zip":
+        unpack_zip(path,filename,name)
+        return True
+    elif filename[-3:].lower()=="rar":
+        unpack_rar(path,filename,name)
+        return True
+    elif filename[-2:].lower()=="7z":
+        unpack_7z(path,filename,name)
+        return True
+    return False
 
 def listdirs(path):
     content = os.listdir(path)
@@ -53,6 +67,8 @@ class Extractor:
     def unpack(self):
         files = os.listdir(self.testing_dir)
         for fl in files:
+            # if unpack(self.testing_dir,fl,name):
+            #     self.names.append(name)
             if fl[-3:].lower()=="zip" or fl[-3:].lower()=="rar":
                 name = fl[:fl.find('_')]
                 if fl[-3:].lower()=="zip":
@@ -76,7 +92,6 @@ class Extractor:
                     ed = editdistance.eval(d,name)
 
                 if ed < edit_dist_thr:
-                    # print("Match: %s \t %s"%(name,d))
                     files_to_move = os.listdir(s_path + "/" + d)
 
                     for sd in files_to_move:

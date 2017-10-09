@@ -85,7 +85,7 @@ class MPPAssign:
             self.copy_tests(s,self.problems[p])
             self.compile_test(s,self.problems[p])
             self.delete_tests(s,self.problems[p])
-        s.grade = s.grade#*100./self.max_score
+        s.grade = s.grade
 
     def copy_tests(self,s,prbl):
         for test in prbl.tests:
@@ -105,14 +105,12 @@ class MPPAssign:
             s,out,e_out,c_out = compile_and_run(target_path)
             if os.path.isfile(target_path[:-4]):
                 os.remove(target_path[:-4])
-            # print(repr(s)+" "+repr(e_out)+" "+repr(c_out))
             score += s
             stud.comp_err_out[int(prbl.folder)][i+1] = c_out
             stud.exec_err_out[int(prbl.folder)][i+1] = e_out
             stud.exec_out[int(prbl.folder)][i+1] = out
             stud.score[int(prbl.folder)][i+1] = s
         stud.grade += prbl.get_score(score)
-        # print(prbl.folder,stud.grade)
 
     def create_grade_report(self):
         with open(self.path+"/"+self.mode+"/"+"00_report.csv","w") as report:
@@ -151,7 +149,6 @@ class Student:
     def __init__(self,name,path):
         self.name = name
         self.path = path+"/"+name
-        # self.solved_problems = [int(p) for p in get_problems_list(self.path)]
         self.solved_problems = dict()
         for p in get_problems_list(self.path):
             self.solved_problems[int(p)] = p
@@ -172,16 +169,13 @@ class Student:
 
                 for test in self.comp_err_out[problem]:
                     srep.write("= PROBLEM "+repr(problem)+" TEST "+repr(test)+" =\n")
-                    # srep.write("\n====== Test "+repr(test)+" start ======\n\n")
                     srep.write("COMPILER OUTPUT:\n")
                     srep.write(self.comp_err_out[problem][test].decode('utf-8'))
                     srep.write("\n\nAPPLICATION OUTPUT:\n")
                     srep.write(self.exec_out[problem][test].decode('utf-8'))
                     srep.write("\n")
                     srep.write(self.exec_err_out[problem][test].decode('utf-8'))
-                    # srep.write("====== Test "+repr(test)+" end ======\n\n")
                     if self.score[problem][test]:
                         srep.write("\n"+"TEST PASSED"+"\n\n")
                     else:
                         srep.write("\n"+"TEST FAILED"+"\n\n")
-                # srep.write("====== Problem "+repr(problem)+" end ======\n\n")
